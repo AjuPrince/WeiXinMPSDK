@@ -364,6 +364,26 @@ namespace Senparc.Weixin.MP.TenPayLibV3
             return new ReverseResult(resultXml);
         }
 
+        /// <summary>
+        /// 撤销订单接口
+        /// </summary>
+        /// <param name="dataInfo"></param>
+        /// <param name="cert">证书绝对路径，如@"F:\apiclient_cert.p12"</param>
+        /// <param name="certPassword">证书密码</param>
+        /// <returns></returns>
+        public static ReverseResult Reverse(TenPayV3ReverseRequestData dataInfo, string cert, string certPassword, int timeOut = Config.TIME_OUT)
+        {
+            var urlFormat = "https://api.mch.weixin.qq.com/secapi/pay/reverse";
+            var data = dataInfo.PackageRequestHandler.ParseXML();
+            //var dataBytes = data == null ? new byte[0] : Encoding.UTF8.GetBytes(data);
+            //using (MemoryStream ms = new MemoryStream(dataBytes))
+            //{
+            //调用证书
+            X509Certificate2 cer = new X509Certificate2(cert, certPassword, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+            string responseContent = CertPost(cert, certPassword, data, urlFormat, timeOut);
+            return new ReverseResult(responseContent);
+            //}
+        }
 
         private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
