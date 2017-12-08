@@ -123,7 +123,10 @@ namespace Senparc.Weixin.MP.TenPayLibV3
 
             #region 设置RequestHandler
 
+            //创建支付应答对象
             PackageRequestHandler = new RequestHandler(null);
+            //初始化
+            PackageRequestHandler.Init();
 
             //设置package订单参数
             PackageRequestHandler.SetParameter("appid", this.AppId); //公众账号ID

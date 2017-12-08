@@ -101,7 +101,7 @@ namespace Senparc.Weixin.MP.TenPayLibV3
         public TenPayV3DownloadBillRequestData(string appId, string mchId, string nonceStr, string deviceInfo,
             string billDate, string billType, string key, string tarType = "GZIP", string signType = "MD5")
         {
-            PackageRequestHandler = new RequestHandler();
+            // PackageRequestHandler = new RequestHandler();
 
             AppId = appId;
             MchId = mchId;
@@ -115,6 +115,11 @@ namespace Senparc.Weixin.MP.TenPayLibV3
 
             #region 设置RequestHandler
 
+            //创建支付应答对象
+            PackageRequestHandler = new RequestHandler(null);
+            //初始化
+            PackageRequestHandler.Init();
+
             //设置package订单参数
             PackageRequestHandler.SetParameter("appid", this.AppId); //公众账号ID
             PackageRequestHandler.SetParameter("mch_id", this.MchId); //商户号
@@ -124,7 +129,6 @@ namespace Senparc.Weixin.MP.TenPayLibV3
             PackageRequestHandler.SetParameter("bill_date", this.BillDate); //对账单日期
             PackageRequestHandler.SetParameter("bill_type", this.BillType); //账单类型
             PackageRequestHandler.SetParameterWhenNotNull("tar_type", this.TarType); //压缩账单
-
             Sign = PackageRequestHandler.CreateMd5Sign("key", this.Key);
             PackageRequestHandler.SetParameter("sign", Sign); //签名
 
