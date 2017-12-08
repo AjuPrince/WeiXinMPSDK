@@ -411,14 +411,15 @@ namespace Senparc.Weixin.MP.TenPayLibV3
 
             var data = dataInfo.PackageRequestHandler.ParseXML();
             var dataBytes = Encoding.UTF8.GetBytes(data);
-            using (MemoryStream ms = new MemoryStream(dataBytes))
-            {
-                //调用证书
-                X509Certificate2 cer = new X509Certificate2(cert, certPassword, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
 
-                string responseContent = CertPost(cert, certPassword, data, url, timeOut);
-                return new RefundResult(responseContent);
-            }
+            //using (MemoryStream ms = new MemoryStream(dataBytes))
+            //{
+            //调用证书
+            X509Certificate2 cer = new X509Certificate2(cert, certPassword, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+
+            string responseContent = CertPost(cert, certPassword, data, url, timeOut);
+            return new RefundResult(responseContent);
+            //}
         }
 
 
