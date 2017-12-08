@@ -379,7 +379,7 @@ namespace Senparc.Weixin.MP.TenPayLibV3
             //using (MemoryStream ms = new MemoryStream(dataBytes))
             //{
             //调用证书
-            X509Certificate2 cer = new X509Certificate2(cert, certPassword, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+            //X509Certificate2 cer = new X509Certificate2(cert, certPassword, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
             string responseContent = CertPost(cert, certPassword, data, urlFormat, timeOut);
             return new ReverseResult(responseContent);
             //}
@@ -415,7 +415,7 @@ namespace Senparc.Weixin.MP.TenPayLibV3
             //using (MemoryStream ms = new MemoryStream(dataBytes))
             //{
             //调用证书
-            X509Certificate2 cer = new X509Certificate2(cert, certPassword, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+            //X509Certificate2 cer = new X509Certificate2(cert, certPassword, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
 
             string responseContent = CertPost(cert, certPassword, data, url, timeOut);
             return new RefundResult(responseContent);
@@ -795,17 +795,21 @@ namespace Senparc.Weixin.MP.TenPayLibV3
         /// 【异步方法】撤销订单接口
         /// </summary>
         /// <param name="dataInfo"></param>
+        /// <param name="cert">证书地址</param>
+        /// <param name="certPassword">证书密码</param>
         /// <returns></returns>
-        public static async Task<ReverseResult> ReverseAsync(TenPayV3ReverseRequestData dataInfo)
+        public static async Task<ReverseResult> ReverseAsync(TenPayV3ReverseRequestData dataInfo, string cert, string certPassword)
         {
             var urlFormat = "https://api.mch.weixin.qq.com/secapi/pay/reverse";
             var data = dataInfo.PackageRequestHandler.ParseXML();
-            var formDataBytes = data == null ? new byte[0] : Encoding.UTF8.GetBytes(data);
-            MemoryStream ms = new MemoryStream();
-            ms.Write(formDataBytes, 0, formDataBytes.Length);
-            ms.Seek(0, SeekOrigin.Begin);//设置指针读取位置
-            var resutlXml = await RequestUtility.HttpPostAsync(urlFormat, null, ms);
-            return new ReverseResult(resutlXml);
+            string responseContent = await CertPostAsync(cert, certPassword, data, urlFormat);
+            return new ReverseResult(responseContent);
+            //var formDataBytes = data == null ? new byte[0] : Encoding.UTF8.GetBytes(data);
+            //MemoryStream ms = new MemoryStream();
+            //ms.Write(formDataBytes, 0, formDataBytes.Length);
+            //ms.Seek(0, SeekOrigin.Begin);//设置指针读取位置
+            //var resutlXml = await RequestUtility.HttpPostAsync(urlFormat, null, ms);
+            //return new ReverseResult(resutlXml);
         }
 
 
